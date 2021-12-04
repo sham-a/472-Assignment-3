@@ -1,11 +1,9 @@
 import gensim.downloader as g
-from gensim.models.word2vec import Word2Vec
 import csv
 
 
 def task1():
     model = g.load('word2vec-google-news-300')
-    # model = Word2Vec(corpus)
 
     f = open("synonyms.txt", "r")
     writer = open('word2vec-google-news-300-details.csv', 'w')
@@ -18,6 +16,9 @@ def task1():
         'c': 2,
         'd': 3
     }
+
+    correct_count = 0
+    guess_count = 0
 
     while True:
         line_reader = f.readline()
@@ -56,8 +57,10 @@ def task1():
 
         if count == 4 or not in_model:
             label = 'guess'
+            guess_count += 1
         elif final_guess_word == answer:
             label = 'correct'
+            correct_count += 1
         else:
             label = 'wrong'
 
@@ -65,6 +68,27 @@ def task1():
         row.append(final_guess_word)
         row.append(label)
         csv_write.writerow(row)
+
+    f.close()
+    writer.close()
+
+    # part 2
+    writer_2 = open('analysis.csv', 'w')
+    csv_2 = csv.writer(writer_2)
+    csv_2.writerow(['Model', 'Size', 'C', 'V', 'Accuracy'])
+    row_2 = ['word2vec-google-news-300']
+
+    size = len(model)
+    row_2.append(size)
+    row_2.append(correct_count)
+    v = 80 - guess_count
+    row_2.append(v)
+    accuracy = correct_count/v
+    row_2.append(accuracy)
+
+    csv_2.writerow(row_2)
+
+    writer_2.close()
 
 
 if __name__ == '__main__':
