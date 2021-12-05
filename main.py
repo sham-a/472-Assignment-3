@@ -8,9 +8,8 @@ csv_2.writerow(['Model', 'Size', 'C', 'V', 'Accuracy'])
 
 
 def start():
-    # write_files('word2vec-google-news-300')
-    # write_files('glove-wiki-gigaword-300')
-    # write_files('word2vec-ruscorpora-300')
+    write_files('word2vec-google-news-300')
+    write_files('glove-wiki-gigaword-300')
     write_files('fasttext-wiki-news-subwords-300')
     write_files('glove-wiki-gigaword-200')
     write_files('glove-wiki-gigaword-50')
