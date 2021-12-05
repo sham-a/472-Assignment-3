@@ -1,12 +1,28 @@
 import gensim.downloader as g
 import csv
 
+# part 2
+writer_2 = open('analysis.csv', 'a')
+csv_2 = csv.writer(writer_2)
+csv_2.writerow(['Model', 'Size', 'C', 'V', 'Accuracy'])
 
-def task1():
-    model = g.load('word2vec-google-news-300')
+
+def start():
+    # write_files('word2vec-google-news-300')
+    # write_files('glove-wiki-gigaword-300')
+    # write_files('word2vec-ruscorpora-300')
+    write_files('fasttext-wiki-news-subwords-300')
+    write_files('glove-wiki-gigaword-200')
+    write_files('glove-wiki-gigaword-50')
+
+    writer_2.close()
+
+
+def write_files(model_name):
+    model = g.load(model_name)
 
     f = open("synonyms.txt", "r")
-    writer = open('word2vec-google-news-300-details.csv', 'w')
+    writer = open(model_name + '-details.csv', 'w')
     csv_write = csv.writer(writer)
     csv_write.writerow(['Question Word', 'Correct Word', 'Guessed Word', 'Label'])
 
@@ -72,24 +88,21 @@ def task1():
     f.close()
     writer.close()
 
-    # part 2
-    writer_2 = open('analysis.csv', 'w')
-    csv_2 = csv.writer(writer_2)
-    csv_2.writerow(['Model', 'Size', 'C', 'V', 'Accuracy'])
-    row_2 = ['word2vec-google-news-300']
+    #part2
+    row_2 = [model_name]
 
     size = len(model)
     row_2.append(size)
     row_2.append(correct_count)
     v = 80 - guess_count
     row_2.append(v)
-    accuracy = correct_count/v
+    if v != 0:
+        accuracy = correct_count/v
+    else:
+        accuracy = 0
     row_2.append(accuracy)
-
     csv_2.writerow(row_2)
-
-    writer_2.close()
 
 
 if __name__ == '__main__':
-    task1()
+    start()
